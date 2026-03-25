@@ -61,3 +61,21 @@ Route::middleware([\App\Http\Middleware\CheckAge::class])->group(function () {
         ]);
     });
 });
+
+Route::prefix('student')->group(function () {
+    Route::get('/attendance', function () {
+        return view('student.studentattendance');
+    });
+
+    Route::get('/details', function () {
+        return view('student.studentdetails');
+    });
+
+    Route::get('/fee', function () {
+        return view('student.studentfee');
+    });
+
+    Route::get('/marks', function () {
+        return view('student.studentmarks');
+    });
+});
