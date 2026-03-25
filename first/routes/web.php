@@ -62,7 +62,7 @@ Route::middleware([\App\Http\Middleware\CheckAge::class])->group(function () {
     });
 });
 
-Route::prefix('student')->group(function () {
+Route::prefix('2023/cse/b.tech/3rd/k23ft')->group(function () {
     Route::get('/attendance', function () {
         return view('student.studentattendance');
     });
