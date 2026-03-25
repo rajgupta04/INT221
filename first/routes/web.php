@@ -68,7 +68,14 @@ Route::prefix('student')->group(function () {
     });
 
     Route::get('/details', function () {
-        return view('student.studentdetails');
+        $students = [
+            ['name' => 'Raj Gupta', 'roll' => 101, 'section' => 'K23FT'],
+            ['name' => 'Simran', 'roll' => 102, 'section' => 'K23FT'],
+            ['name' => 'Aarav', 'roll' => 103, 'section' => 'L23FT'],
+            ['name' => 'Kavya', 'roll' => 104, 'section' => 'L23FT'],
+            ['name' => 'Rahul', 'roll' => 105, 'section' => 'M23FT']
+        ];
+        return view('student.studentdetails', compact('students'));
     });
 
     Route::get('/fee', function () {
