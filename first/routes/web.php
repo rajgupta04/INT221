@@ -39,25 +39,25 @@ Route::get('student',function(){
 Route::middleware([\App\Http\Middleware\CheckAge::class])->group(function () {
     Route::get('/student1', function () {
         return view('student1', [
-            'name' => fake()->name(),
-            'roll' => fake()->numberBetween(1, 100),
-            'section' => fake()->randomElement(['A', 'B', 'C', 'D'])
+            'name' => request('name', 'Unknown'),
+            'roll' => request('roll', 'N/A'),
+            'section' => request('section', 'N/A')
         ]);
     });
     
     Route::get('/student2', function () {
         return view('student2', [
-            'name' => fake()->name(),
-            'roll' => fake()->numberBetween(1, 100),
-            'section' => fake()->randomElement(['A', 'B', 'C', 'D'])
+            'name' => request('name', 'Unknown'),
+            'roll' => request('roll', 'N/A'),
+            'section' => request('section', 'N/A')
         ]);
     });
     
     Route::get('/student3', function () {
         return view('student3', [
-            'name' => fake()->name(),
-            'roll' => fake()->numberBetween(1, 100),
-            'section' => fake()->randomElement(['A', 'B', 'C', 'D'])
+            'name' => request('name', 'Unknown'),
+            'roll' => request('roll', 'N/A'),
+            'section' => request('section', 'N/A')
         ]);
     });
 });
