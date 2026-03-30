@@ -86,3 +86,11 @@ Route::prefix('2023/cse/b.tech/3rd/k23ft')->group(function () {
         return view('student.studentmarks');
     });
 });
+
+
+    Route::get('/Monday', function () {
+        return view('Monday');
+    });
+    Route::get('/header', function () {
+        return view('layout.header');
+    });
