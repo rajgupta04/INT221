@@ -94,3 +94,9 @@ Route::prefix('2023/cse/b.tech/3rd/k23ft')->group(function () {
     Route::get('/header', function () {
         return view('layout.header');
     });
+
+// Controller Redirection Routes
+use App\Http\Controllers\RedirectController;
+
+Route::get('/redirect-test', [RedirectController::class, 'redirectToHome']);
+Route::get('/home-controller', [RedirectController::class, 'home'])->name('home');

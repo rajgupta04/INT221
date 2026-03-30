@@ -4,4 +4,6 @@
     bottom: 0;
     flex: 1;
     text-align: center;
+    position: fixed;
+    width: 1000px;
 }
