@@ -9,8 +9,12 @@ Route::post('/students/process', [StudentController::class, 'processList']);
 
 // Demonstration Routes
 Route::get('/demo-urls', [StudentController::class, 'showUrls']);
-Route::get('/api/v1/students', [StudentController::class, 'apiEndpointOne']);
+Route::get('/api/v1/students', [StudentController::class, 'apiEndpointOne'])->name('api.v1.students');
 Route::get('/api/v2/students', [StudentController::class, 'apiEndpointTwo']);
+
+Route::get('/demo-links', function () {
+    return view('demo-links');
+});
 
 Route::get('/', function () {
     return view('welcome');
