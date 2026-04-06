@@ -1,102 +1,29 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
-use function PHPUnit\Framework\isNumeric;
+Route::get('/students/dummy', [StudentController::class, 'dummyList']);
+Route::post('/students/process', [StudentController::class, 'processList']);
+
+// Demonstration Routes
+Route::get('/demo-urls', [StudentController::class, 'showUrls']);
+Route::get('/api/v1/students', [StudentController::class, 'apiEndpointOne']);
+Route::get('/api/v2/students', [StudentController::class, 'apiEndpointTwo']);
 
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/home', function () {
-    return view('home');
-});
-Route::get('/json', function () {
-    return response()->JSON(["Message"=>"How Are You?"]);
-});
-// Route::get('/{name}', function ($name) {
-//     return response()->JSON(["Message"=>"Hello $name"]);
-// });
-Route::get('user/name/{name}', function ($name) {
-    return view('user',['n'=>$name]);
-})->where('name', '[A-Z][a-z]+'); // '[]' -> single '[]+' -> mutiple any no of time '[]*' -> multiple but unique digits  where('name', '[A-Za-z\s\-]+');
-// Route::get('/{id}', function ($id) {
-//     return view('user',['n'=>$id]);
-// })->whereNumber('id');
-Route::get('user/idname/{id}/{name}', function ($id,$name) {
-    return view('user',['n'=>$id,'id'=>$id]);
-})->where('name', '[A-Z][a-z]+')->where('id', '[0-9]+');
-Route::get('user/id/{id}', function ($id) {
-    if(is_numeric($id))
-    return view('user',['n'=>$id]);
-else return "Only Integer Are Allowed!!";
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('student',function(){
-    [$name='Parveen',$roll=12,$section="323Ft"];
-    return view('student1',['name' =>$name,'roll'=>$roll,'section' => $section]);
-});
-
-Route::middleware([\App\Http\Middleware\CheckAge::class])->group(function () {
-    Route::get('/student1', function () {
-        return view('student1', [
-            'name' => request('name', 'Unknown'),
-            'roll' => request('roll', 'N/A'),
-            'section' => request('section', 'N/A')
-        ]);
-    });
-    
-    Route::get('/student2', function () {
-        return view('student2', [
-            'name' => request('name', 'Unknown'),
-            'roll' => request('roll', 'N/A'),
-            'section' => request('section', 'N/A')
-        ]);
-    });
-    
-    Route::get('/student3', function () {
-        return view('student3', [
-            'name' => request('name', 'Unknown'),
-            'roll' => request('roll', 'N/A'),
-            'section' => request('section', 'N/A')
-        ]);
-    });
-});
-
-Route::prefix('2023/cse/b.tech/3rd/k23ft')->group(function () {
-    Route::get('/attendance', function () {
-        return view('student.studentattendance');
-    });
-
-    Route::get('/details', function () {
-        $students = [
-            ['name' => 'Raj Gupta', 'roll' => 101, 'section' => 'K23FT'],
-            ['name' => 'Simran', 'roll' => 102, 'section' => 'K23FT'],
-            ['name' => 'Aarav', 'roll' => 103, 'section' => 'L23FT'],
-            ['name' => 'Kavya', 'roll' => 104, 'section' => 'L23FT'],
-            ['name' => 'Rahul', 'roll' => 105, 'section' => 'M23FT']
-        ];
-        return view('student.studentdetails', compact('students'));
-    });
-
-    Route::get('/fee', function () {
-        return view('student.studentfee');
-    });
-
-    Route::get('/marks', function () {
-        return view('student.studentmarks');
-    });
-});
-
-
-    Route::get('/Monday', function () {
-        return view('Monday');
-    });
-    Route::get('/header', function () {
-        return view('layout.header');
-    });
-
-// Controller Redirection Routes
-use App\Http\Controllers\RedirectController;
-
-Route::get('/redirect-test', [RedirectController::class, 'redirectToHome']);
-Route::get('/home-controller', [RedirectController::class, 'home'])->name('home');
+require __DIR__.'/auth.php';
