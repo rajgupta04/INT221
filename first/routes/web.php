@@ -53,12 +53,27 @@ Route::get('/upload', function () {
 Route::post('/upload', function (Request $request) {
     if ($request->hasFile('file') && $request->file('file')->isValid()) {
         $file = $request->file('file');
-        $filename = time() . '_' . $file->getClientOriginalName();
+        // $filename = time() . '_' . $file->getClientOriginalName();
+        $filename = $file->getClientOriginalName();
         // This will save the file to "storage/app/public/uploads" folder
         $path = $file->storeAs('uploads', $filename, 'public');
         
-        return back()->with('success', 'File properly uploaded to /public/uploads/' . $filename);
+        return back()->with('success', 'File properly uploaded to storage/app/public/uploads/' . $filename);
     }
     
     return back()->withErrors(['file' => 'There was an issue uploading the file.']);
 })->name('file.upload');
+
+use Illuminate\Support\Facades\Storage;
+
+Route::get('/display-uploads', function () {
+    $files = Storage::disk('public')->files('uploads');
+    return view('display_uploads', compact('files'));
+});
+
+Route::get('/download-file/{filename}', function ($filename) {
+    if (Storage::disk('public')->exists('uploads/' . $filename)) {
+        return Storage::disk('public')->download('uploads/' . $filename);
+    }
+    return back()->withErrors(['file' => 'File not found.']);
+});
