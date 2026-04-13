@@ -16,6 +16,14 @@ Route::get('/demo-links', function () {
     return view('demo-links');
 });
 
+// Gallery Demonstration Routes
+Route::view('/gallery', 'gallery')->name('gallery.index');
+Route::view('/gallery/flower', 'details.flower')->name('gallery.flower');
+Route::view('/gallery/dog', 'details.dog')->name('gallery.dog');
+Route::view('/gallery/student', 'details.student')->name('gallery.student');
+Route::view('/gallery/teacher', 'details.teacher')->name('gallery.teacher');
+Route::view('/gallery/tv', 'details.tv')->name('gallery.tv');
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -31,3 +39,26 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+use App\Http\Controllers\LanguageController;
+
+Route::get('/monday/{locale?}', [LanguageController::class, 'showMonday']);
+
+use Illuminate\Http\Request;
+
+Route::get('/upload', function () {
+    return view('upload');
+});
+
+Route::post('/upload', function (Request $request) {
+    if ($request->hasFile('file') && $request->file('file')->isValid()) {
+        $file = $request->file('file');
+        $filename = time() . '_' . $file->getClientOriginalName();
+        // This will save the file to "storage/app/public/uploads" folder
+        $path = $file->storeAs('uploads', $filename, 'public');
+        
+        return back()->with('success', 'File properly uploaded to /public/uploads/' . $filename);
+    }
+    
+    return back()->withErrors(['file' => 'There was an issue uploading the file.']);
+})->name('file.upload');
